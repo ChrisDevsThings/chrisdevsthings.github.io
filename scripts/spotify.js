@@ -56,7 +56,11 @@ window.onload = () => {
 
 // Login to Spotify
 function loginToSpotify() {
-    const authUrl = `${SPOTIFY_AUTH_URL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&response_type=token`;
+    // Generate random state string for security
+    const state = Math.random().toString(36).substring(2, 15);
+    localStorage.setItem('spotify_auth_state', state);
+    
+    const authUrl = `${SPOTIFY_AUTH_URL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&response_type=token&show_dialog=true&state=${state}`;
     window.location.href = authUrl;
 }
 
@@ -126,4 +130,3 @@ function updateTrackInfo(track, isRecent) {
     trackNameElement.style.cursor = 'default';
     trackNameElement.onclick = null;
 }
-
