@@ -1,6 +1,6 @@
 // Spotify API Configuration
 const clientId = 'c7a07267bb44402d9a8a17c83655dbdf'; // Your Spotify Client ID
-const redirectUri = 'ChrisDevsThings.github.io'; // This will be your website's URL
+const redirectUri = 'chrisdevsthings.github.io'; // This will be your website's URL
 
 // Spotify API endpoints
 const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize';
@@ -107,3 +107,4 @@ function updateTrackInfo(track, isRecent) {
     trackNameElement.onclick = null;
 
 }
+
