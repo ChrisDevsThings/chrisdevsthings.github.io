@@ -21,30 +21,30 @@ const trackArtElement = document.getElementById('trackArt');
 // Check if we're returning from Spotify auth
 window.onload = () => {
     console.log('Checking Spotify auth...');
-    const params = new URLSearchParams(window.location.search);
-    const authCode = params.get('code');
+    const hash = window.location.hash;
     
-    if (authCode) {
-        console.log('Got authorization code:', authCode);
-        // Exchange the code for a token
-        exchangeCodeForToken(authCode);
-    } else {
-        console.log('No auth code found, checking hash fallback...');
-        const hash = window.location.hash;
-        if (hash) {
-            console.log('Found hash:', hash);
-            const token = hash
-                .substring(1)
-                .split('&')
-                .find(elem => elem.startsWith('access_token'))
-                ?.split('=')[1];
+    if (hash) {
+        console.log('Found hash:', hash);
+        // Parse all hash parameters
+        const hashParams = new URLSearchParams(hash.substring(1));
+        
+        // Check for errors first
+        const error = hashParams.get('error');
+        if (error) {
+            console.error('Auth error:', error);
+            localStorage.removeItem('spotify_token');
+            return;
+        }
 
-            if (token) {
-                console.log('Got token from hash, saving...');
-                localStorage.setItem('spotify_token', token);
-                window.location.hash = ''; // Clear the hash
-                updateNowPlaying(token);
-            }
+        // Look for access token
+        const token = hashParams.get('access_token');
+        if (token) {
+            console.log('Got token from hash, saving...');
+            localStorage.setItem('spotify_token', token);
+            window.location.hash = ''; // Clear the hash
+            updateNowPlaying(token);
+        } else {
+            console.log('No token found in hash');
         }
     }
 
@@ -70,17 +70,20 @@ function loginToSpotify() {
     const state = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('spotify_auth_state', state);
     
-    const params = new URLSearchParams({
-        client_id: clientId,
-        response_type: 'token',  // Changed to token for implicit flow
-        redirect_uri: redirectUri,
-        state: state,
-        scope: scopes.join(' '),
-        show_dialog: true
-    });
+    // Construct the authorization URL
+    const authUrl = new URL(SPOTIFY_AUTH_URL);
     
-    const authUrl = `${SPOTIFY_AUTH_URL}?${params.toString()}`;
-    window.location.href = authUrl;
+    // Add the query parameters
+    authUrl.searchParams.append('client_id', clientId);
+    authUrl.searchParams.append('response_type', 'token');
+    authUrl.searchParams.append('redirect_uri', redirectUri);
+    authUrl.searchParams.append('state', state);
+    authUrl.searchParams.append('scope', scopes.join(' '));
+    authUrl.searchParams.append('show_dialog', 'true');
+    
+    // Redirect to Spotify
+    console.log('Redirecting to:', authUrl.toString());
+    window.location.href = authUrl.toString();
 }
 
 // Update the Now Playing section
