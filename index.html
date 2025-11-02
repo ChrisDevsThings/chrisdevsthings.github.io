@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>C | H | R | I | S</title>
+    <meta name="description" content="Cyberpunk-inspired portfolio." />
+    <!-- Google fonts suited for cyberpunk / tech look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../design/styles.css" />
+</head>
+
+<body>
+    <div class="bg-visuals" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="logo" href="#">C | H | R | I | S</a>
+            <nav class="site-nav" id="siteNav">
+                <a href="aboutme.html">About</a>
+                <a href="projects.html">Projects</a>
+                <a href="qualifications.html">Qualifications</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="blog.html">Blog</a>
+                <a href="testimonials.html">Testimonials</a>
+                <a href="faq.html">FAQ</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle light mode">
+                    <span class="icon icon-moon" aria-hidden="true">🌙</span>
+                    <span class="icon icon-sun" aria-hidden="true">☀️</span>
+                </button>
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                    <span class="hamburger"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-inner">
+                <div class="profile-card">
+                    <!-- Your GIF avatar: save the GIF at assets/pfp.gif -->
+                    <div class="pfp-wrap neon">
+                <img id="pfp" src="../assets/pfp.gif" alt="Animated Profile Pic - Travis" loading="lazy" />
+                    </div>
+                    <div class="hero-text">
+                        <h1 class="neon">Hi, I'm <span class="name">Chris</span></h1>
+                        <p class="tagline" id="tagline">I build interactive web experiences.</p>
+                        <div class="hero-ctas">
+                            <a class="btn primary" href="projects.html">See projects</a>
+                            <a class="btn ghost" href="contact.html">Get in touch</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section container">
+            <h2 class="section-title">About</h2>
+            <p class="muted">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam minus quasi perferendis sed deserunt dolor asperiores quod doloremque. Consequatur ex illum possimus eaque tempora similique eligendi accusamus dolores illo quae? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellat debitis quam eligendi ad exercitationem repudiandae dignissimos esse porro ut, provident odit odio, itaque recusandae, ipsum vitae maiores excepturi aliquid distinctio. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam perspiciatis reprehenderit voluptas fuga impedit reiciendis mollitia earum, a, sapiente nostrum facilis, culpa eaque velit temporibus aut veniam eligendi error saepe!</p>
+        </section>
+
+        <section id="status" class="section container">
+            <div class="status-grid">
+                <div class="status-card">
+                    <h3 class="status-title">Now Playing</h3>
+                    <div class="spotify-status">
+                        <div class="track-info">
+                            <div class="track-art">
+                                <div class="pulse-ring"></div>
+                                <img id="trackArt" src="../assets/placeholder-art.png" alt="Album art" />
+                            </div>
+                            <div class="track-details">
+                                <span id="trackName" class="neon">Not Playing</span>
+                                <span id="artistName" class="muted">Spotify</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="socials-card">
+                    <h3 class="status-title">Socials</h3>
+                    <div class="social-links">
+                        <a href="https://github.com/yourusername" class="social-link neon">
+                            <span class="social-icon">🔗</span>
+                            GitHub
+                        </a>
+                        <a href="https://twitter.com/yourusername" class="social-link neon">
+                            <span class="social-icon">🔗</span>
+                            Twitter
+                        </a>
+                        <a href="https://linkedin.com/in/yourusername" class="social-link neon">
+                            <span class="social-icon">🔗</span>
+                            LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section container">
+            <h2 class="section-title">Projects:</h2>
+            <div class="cards">
+                <article class="card">
+                    <h3>Project One:</h3>
+                    <p class="muted">Coming Soon!</p>
+                </article>
+                <article class="card">
+                    <h3>Project Two:</h3>
+                    <p class="muted">Coming Soon!</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="contact" class="section container">
+            <h2 class="section-title">Contact:</h2>
+            <p>Email: <a href="mailto:Christopher.S.Sutherland@proton.me"> Christopher.S.Sutherland@proton.me </a></p>
+            <p>Telegram: <a href="https://t.me/ChristopherSuth">https://t.me/ChristopherSuth</a></p>
+            <p> Discord: sus.wtf</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© <span id="year"></span> Chris.</small>
+        </div>
+    </footer>
+
+    <script src="../scripts/main.js" defer></script>
+</body>
+
+</html>

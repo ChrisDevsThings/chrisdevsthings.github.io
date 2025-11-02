@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — C | H | R | I | S</title>
+  <meta name="description" content="Contact page — get in touch." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../design/styles.css">
+</head>
+<body>
+  <div class="bg-visuals" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html">C | H | R | I | S</a>
+      <nav class="site-nav" id="siteNav">
+        <a href="aboutme.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="qualifications.html">Qualifications</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog.html">Blog</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle light mode">
+          <span class="icon icon-moon" aria-hidden="true">🌙</span>
+          <span class="icon icon-sun" aria-hidden="true">☀️</span>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section hero">
+      <div class="container">
+        <div class="contact-grid">
+          <aside class="contact-info card reveal">
+            <div class="pfp-wrap neon">
+              <img id="pfp" src="../assets/pfp.gif" alt="Profile picture of Chris" loading="lazy" />
+            </div>
+            <h1 class="neon">Get in touch</h1>
+            <p class="muted">Have a project, question, or just want to say hi? Use the form — I usually reply within a few days.</p>
+            <div class="contact-meta">
+            <p>Email: <a href="mailto:Christopher.S.Sutherland@proton.me"> Christopher.S.Sutherland@proton.me </a></p>
+            <p>Telegram: <a href="https://t.me/ChristopherSuth"> https://t.me/ChristopherSuth</a></p>
+            <p> Discord: sus.wtf</p>
+              <p><strong>Location:</strong><br>London</p>
+            </div>
+          </aside>
+
+          <div class="contact-form-wrap reveal">
+            <form id="contactForm" class="card contact-form" novalidate>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="name">Your name</label>
+                  <input id="name" name="name" type="text" required placeholder="Your full name" />
+                </div>
+                <div class="form-field">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" required placeholder="you@example.com" />
+                </div>
+                <div class="form-field full">
+                  <label for="subject">Subject</label>
+                  <input id="subject" name="subject" type="text" placeholder="Short subject" />
+                </div>
+                <div class="form-field full">
+                  <label for="message">Message</label>
+                  <textarea id="message" name="message" rows="6" required placeholder="Tell me about your project..."></textarea>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn primary">Send message</button>
+                <div id="formStatus" aria-live="polite" class="form-status muted">&nbsp;</div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- success modal -->
+    <div id="successModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-panel card">
+        <h3>Message sent</h3>
+        <p>Thanks — I received your message and will get back to you soon.</p>
+        <button id="closeModal" class="btn ghost">Close</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container"><small>© <span id="year"></span> Chris</small></div>
+  </footer>
+
+  <script src="../scripts/main.js" defer></script>
+</body>
+</html>

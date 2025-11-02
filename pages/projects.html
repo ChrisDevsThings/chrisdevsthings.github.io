@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projects — C | H | R | I | S</title>
+  <meta name="description" content="Projects — showcase of work." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../design/styles.css">
+</head>
+<body>
+  <div class="bg-visuals" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html">C | H | R | I | S</a>
+      <nav class="site-nav" id="siteNav">
+        <a href="aboutme.html">About</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="qualifications.html">Qualifications</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog.html">Blog</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle light mode">
+          <span class="icon icon-moon" aria-hidden="true">🌙</span>
+          <span class="icon icon-sun" aria-hidden="true">☀️</span>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section hero">
+      <div class="container">
+        <div class="hero-text">
+          <h1 class="neon">Projects</h1>
+          <p class="tagline muted">Selected work: interfaces, small apps, UI experiments. Click a card to view details.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="project-grid">
+          <!-- sample project card -->
+          <article class="card project-card reveal" data-title="Project 1" data-desc="Coming Soon!" data-img="assets/project1.png" data-link="#">
+            <div class="project-thumb" aria-hidden="true"></div>
+            <h3>Project 1</h3>
+            <p class="muted">Coming Soon!</p>
+            <div class="project-actions">
+              <button class="btn ghost view-project" type="button">View</button>
+              <a class="btn primary" href="#" aria-label="Open project link">Repo</a>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-title="Project 2" data-desc="Coming Soon!" data-img="assets/project2.png" data-link="#">
+            <div class="project-thumb" aria-hidden="true"></div>
+            <h3>Project 2</h3>
+            <p class="muted">Coming Soon!</p>
+            <div class="project-actions">
+              <button class="btn ghost view-project" type="button">View</button>
+              <a class="btn primary" href="#" aria-label="Open project link">Repo</a>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-title="Project 3" data-desc="Coming Soon!" data-img="assets/project3.png" data-link="#">
+            <div class="project-thumb" aria-hidden="true"></div>
+            <h3>Project 3</h3>
+            <p class="muted">Coming Soon!</p>
+            <div class="project-actions">
+              <button class="btn ghost view-project" type="button">View</button>
+              <a class="btn primary" href="#" aria-label="Open project link">Repo</a>
+            </div>
+          </article>
+
+          <!-- more cards, repeated for layout -->
+          <article class="card project-card reveal" data-title="Project 4" data-desc="Coming Soon!" data-img="assets/project4.png" data-link="#">
+            <div class="project-thumb" aria-hidden="true"></div>
+            <h3>Project 4</h3>
+            <p class="muted">Coming Soon!</p>
+            <div class="project-actions">
+              <button class="btn ghost view-project" type="button">View</button>
+              <a class="btn primary" href="#" aria-label="Open project link">Repo</a>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-title="Project 5" data-desc="Coming Soon!" data-img="assets/project5.png" data-link="#">
+            <div class="project-thumb" aria-hidden="true"></div>
+            <h3>Project 5</h3>
+            <p class="muted">Coming Soon!</p>
+            <div class="project-actions">
+              <button class="btn ghost view-project" type="button">View</button>
+              <a class="btn primary" href="#" aria-label="Open project link">Repo</a>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-title="Project 6" data-desc="Coming Soon!" data-img="assets/project6.png" data-link="#">
+            <div class="project-thumb" aria-hidden="true"></div>
+            <h3>Project 6</h3>
+            <p class="muted">Coming Soon!</p>
+            <div class="project-actions">
+              <button class="btn ghost view-project" type="button">View</button>
+              <a class="btn primary" href="#" aria-label="Open project link">Repo</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- project detail modal -->
+    <div id="projectModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-panel card">
+        <button id="closeProjectModal" class="btn ghost" style="position:absolute; right:14px; top:14px;">Close</button>
+        <div class="project-detail">
+          <div class="project-detail-thumb" style="height:180px; border-radius:10px; margin-bottom:12px; background:linear-gradient(135deg, rgba(155,92,255,0.06), rgba(110,240,255,0.02));"></div>
+          <h3 id="projectModalTitle">Project title</h3>
+          <p id="projectModalDesc" class="muted">Project description</p>
+          <div style="margin-top:12px; display:flex; gap:10px; justify-content:center;">
+            <a id="projectModalLink" class="btn primary" href="#">Open</a>
+            <button id="projectModalClose" class="btn ghost">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container"><small>© <span id="year"></span> Chris</small></div>
+  </footer>
+
+  <script src="../scripts/main.js" defer></script>
+</body>
+</html>

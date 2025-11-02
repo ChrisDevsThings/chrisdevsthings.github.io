@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blog — C | H | R | I | S</title>
+  <meta name="description" content="Life, website, and project updates." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../design/styles.css">
+</head>
+<body>
+  <div class="bg-visuals" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html">C | H | R | I | S</a>
+      <nav class="site-nav" id="siteNav">
+        <a href="aboutme.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="qualifications.html">Qualifications</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog.html" aria-current="page">Blog</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle light mode">
+          <span class="icon icon-moon" aria-hidden="true">🌙</span>
+          <span class="icon icon-sun" aria-hidden="true">☀️</span>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section hero">
+      <div class="container">
+        <div class="hero-text">
+          <h1 class="neon">Blog</h1>
+          <p class="tagline muted">Life updates, website changes, and project progress.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="blog-grid">
+          <!-- Blog post 1 -->
+          <article class="blog-post card reveal">
+            <div class="post-meta">
+              <time datetime="2025-10-25" class="muted">Oct 25, 2025</time>
+              <span class="post-category category-life">Life</span>
+            </div>
+            <h2>New Fitness Journey</h2>
+            <p class="muted">Just started my fitness journey. Check out the Gallery page for progress pics!</p>
+            <div class="post-actions">
+              <button class="btn ghost view-post" type="button">Read more</button>
+            </div>
+          </article>
+
+          <!-- Blog post 2 -->
+          <article class="blog-post card reveal">
+            <div class="post-meta">
+              <time datetime="2025-10-25" class="muted">Oct 25, 2025</time>
+              <span class="post-category category-website">Website</span>
+            </div>
+            <h2>Website Launch</h2>
+            <p class="muted">Finally launched my cyberpunk-themed portfolio! Dark mode by default with a light toggle.</p>
+            <div class="post-actions">
+              <button class="btn ghost view-post" type="button">Read more</button>
+            </div>
+          </article>
+
+          <!-- Blog post 3 -->
+          <article class="blog-post card reveal">
+            <div class="post-meta">
+              <time datetime="2025-10-25" class="muted">Oct 25, 2025</time>
+              <span class="post-category category-projects">Projects</span>
+            </div>
+            <h2>Project Updates Coming Soon</h2>
+            <p class="muted">Working on some exciting projects. Stay tuned for updates!</p>
+            <div class="post-actions">
+              <button class="btn ghost view-post" type="button">Read more</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- blog post detail modal -->
+    <div id="blogModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-panel card">
+        <button id="closeBlogModal" class="btn ghost" style="position:absolute; right:14px; top:14px;">Close</button>
+        <div class="blog-detail">
+          <div class="post-meta">
+            <time id="blogModalDate" datetime="2025-10-25" class="muted">Oct 25, 2025</time>
+            <span id="blogModalCategory" class="post-category">Category</span>
+          </div>
+          <h2 id="blogModalTitle">Post title</h2>
+          <div id="blogModalContent" class="blog-content">
+            <p class="muted">Post content</p>
+          </div>
+          <div style="margin-top:18px;">
+            <button id="blogModalClose" class="btn ghost">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container"><small>© <span id="year"></span> Chris</small></div>
+  </footer>
+
+  <script src="../scripts/main.js" defer></script>
+</body>
+</html>
