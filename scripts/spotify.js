@@ -3,7 +3,7 @@ const clientId = 'c7a07267bb44402d9a8a17c83655dbdf'; // Your Spotify Client ID
 const redirectUri = 'https://chrisdevsthings.github.io'; // Your GitHub Pages URL
 
 // Spotify API endpoints
-const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize/';  // Added trailing slash to base endpoint
+const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'; // No trailing slash
 const SPOTIFY_NOW_PLAYING_URL = 'https://api.spotify.com/v1/me/player/currently-playing';
 const SPOTIFY_RECENTLY_PLAYED_URL = 'https://api.spotify.com/v1/me/player/recently-played';
 
