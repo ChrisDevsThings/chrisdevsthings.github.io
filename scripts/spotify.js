@@ -21,49 +21,35 @@ const trackArtElement = document.getElementById('trackArt');
 // Check if we're returning from Spotify auth
 window.onload = () => {
     console.log('Checking Spotify auth...');
-    
-    // Get the hash fragment
-    const hash = window.location.hash.substring(1);
+
+    const hash = window.location.hash;
     if (!hash) {
-        console.log('No hash found');
         checkSavedToken();
         return;
     }
-    
-    // Parse the hash string into an object
-    const result = hash.split('&').reduce(function(result, item) {
-        const parts = item.split('=');
-        result[parts[0]] = decodeURIComponent(parts[1]);
-        return result;
-    }, {});
-    
-    console.log('Auth result:', result);
-    
-    // Check if there was an error
-    if (result.error) {
-        console.error('Auth error:', result.error);
-        localStorage.removeItem('spotify_token');
-        checkSavedToken();
-        return;
-    }
-    
-    // Verify state matches
+
+    // Get access token from hash
+    const hashParams = new URLSearchParams(hash.substring(1));
+    const access_token = hashParams.get('access_token');
+    const state = hashParams.get('state');
     const storedState = localStorage.getItem('spotify_auth_state');
-    if (result.state !== storedState) {
+
+    // Clear the state
+    localStorage.removeItem('spotify_auth_state');
+
+    if (access_token && (state == null || state !== storedState)) {
         console.error('State mismatch!');
         checkSavedToken();
-        return;
-    }
-    
-    // If we have an access token, store it
-    if (result.access_token) {
-        console.log('Got access token');
-        localStorage.setItem('spotify_token', result.access_token);
-        localStorage.removeItem('spotify_auth_state'); // Clean up state
-        window.location.hash = '';
-        updateNowPlaying(result.access_token);
     } else {
-        checkSavedToken();
+        // We have a valid token
+        if (access_token) {
+            console.log('Got access token');
+            localStorage.setItem('spotify_token', access_token);
+            window.location.hash = '';
+            updateNowPlaying(access_token);
+        } else {
+            checkSavedToken();
+        }
     }
 };
 
@@ -87,27 +73,15 @@ function checkSavedToken() {
 
 // Login to Spotify
 function loginToSpotify() {
-    // Generate a random state value for security
     const state = generateRandomString(16);
-    
-    // Build authorization URL
-    const params = {
-        client_id: clientId,
-        redirect_uri: redirectUri,
-        response_type: 'token',
-        state: state,
-        scope: scopes.join(' ')
-    };
-
-    // Convert params to URL string
-    const searchParams = Object.keys(params)
-        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
-        .join('&');
-
-    const authUrl = SPOTIFY_AUTH_URL + '?' + searchParams;
-    
-    // Store state in localStorage to verify when we return
     localStorage.setItem('spotify_auth_state', state);
+
+    const authUrl = SPOTIFY_AUTH_URL +
+        '?response_type=token' +
+        '&client_id=' + encodeURIComponent(clientId) +
+        '&scope=' + encodeURIComponent(scopes.join(' ')) +
+        '&redirect_uri=' + encodeURIComponent(redirectUri) +
+        '&state=' + encodeURIComponent(state);
     
     console.log('Redirecting to:', authUrl);
     window.location = authUrl;
