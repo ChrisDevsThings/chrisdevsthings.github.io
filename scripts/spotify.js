@@ -1,6 +1,6 @@
 // Spotify API Configuration
 const clientId = 'c7a07267bb44402d9a8a17c83655dbdf'; // Your Spotify Client ID
-const redirectUri = 'chrisdevsthings.github.io'; // This will be your website's URL
+const redirectUri = 'https://chrisdevsthings.github.io'; // Your GitHub Pages URL
 
 // Spotify API endpoints
 const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize';
@@ -20,8 +20,10 @@ const trackArtElement = document.getElementById('trackArt');
 
 // Check if we're returning from Spotify auth
 window.onload = () => {
+    console.log('Checking Spotify auth...');
     const hash = window.location.hash;
     if (hash) {
+        console.log('Found hash:', hash);
         const token = hash
             .substring(1)
             .split('&')
@@ -29,6 +31,7 @@ window.onload = () => {
             ?.split('=')[1];
 
         if (token) {
+            console.log('Got token, saving...');
             localStorage.setItem('spotify_token', token);
             window.location.hash = ''; // Clear the hash
             updateNowPlaying(token);
@@ -37,10 +40,17 @@ window.onload = () => {
 
     // If we have a token, start updating the now playing
     const token = localStorage.getItem('spotify_token');
+    console.log('Stored token:', token ? 'Found' : 'Not found');
     if (token) {
         updateNowPlaying(token);
         // Update every 30 seconds
         setInterval(() => updateNowPlaying(token), 30000);
+    } else {
+        // No token, show login option
+        console.log('No token found, showing login option');
+        trackNameElement.textContent = 'Click to connect Spotify';
+        trackNameElement.style.cursor = 'pointer';
+        trackNameElement.onclick = loginToSpotify;
     }
 };
 
@@ -52,6 +62,15 @@ function loginToSpotify() {
 
 // Update the Now Playing section
 async function updateNowPlaying(token) {
+    if (!token) {
+        console.log('No token found, showing login option');
+        trackNameElement.textContent = 'Click to connect Spotify';
+        trackNameElement.style.cursor = 'pointer';
+        trackNameElement.onclick = loginToSpotify;
+        return;
+    }
+
+    console.log('Updating now playing...');
     try {
         // Try to get currently playing
         const response = await fetch(SPOTIFY_NOW_PLAYING_URL, {
@@ -59,6 +78,7 @@ async function updateNowPlaying(token) {
                 'Authorization': `Bearer ${token}`
             }
         });
+        console.log('Spotify API response status:', response.status);
 
         if (response.status === 204) {
             // No track currently playing, try to get recently played
@@ -105,6 +125,5 @@ function updateTrackInfo(track, isRecent) {
     // Remove any click handler that might have been added
     trackNameElement.style.cursor = 'default';
     trackNameElement.onclick = null;
-
 }
 
