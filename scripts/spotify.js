@@ -75,17 +75,13 @@ function loginToSpotify() {
     const state = generateRandomString(16);
     localStorage.setItem('spotify_auth_state', state);
     
-    const params = new URLSearchParams({
-        client_id: clientId,
-        response_type: 'token',
-        redirect_uri: redirectUri,
-        state: state,
-        scope: scopes.join(' '),
-        show_dialog: true,
-        grant_type: 'implicit'
-    });
-
-    const authUrl = `${SPOTIFY_AUTH_URL}?${params.toString()}`;
+    // Build the authorization URL manually to ensure correct encoding
+    const authUrl = SPOTIFY_AUTH_URL + 
+        '?client_id=' + encodeURIComponent(clientId) +
+        '&response_type=token' +
+        '&redirect_uri=' + encodeURIComponent(redirectUri) +
+        '&state=' + encodeURIComponent(state) +
+        '&scope=' + encodeURIComponent(scopes.join(' '));
     console.log('Redirecting to:', authUrl);
     window.location.href = authUrl;
 }
