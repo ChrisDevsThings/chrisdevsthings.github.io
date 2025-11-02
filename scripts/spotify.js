@@ -21,36 +21,57 @@ const trackArtElement = document.getElementById('trackArt');
 // Check if we're returning from Spotify auth
 window.onload = () => {
     console.log('Checking Spotify auth...');
-    const hash = window.location.hash;
     
-    if (hash) {
-        console.log('Found hash:', hash);
-        // Parse all hash parameters
-        const hashParams = new URLSearchParams(hash.substring(1));
-        
-        // Check for errors first
-        const error = hashParams.get('error');
-        if (error) {
-            console.error('Auth error:', error);
-            localStorage.removeItem('spotify_token');
-            return;
-        }
-
-        // Look for access token
-        const token = hashParams.get('access_token');
-        if (token) {
-            console.log('Got token from hash, saving...');
-            localStorage.setItem('spotify_token', token);
-            window.location.hash = ''; // Clear the hash
-            updateNowPlaying(token);
-        } else {
-            console.log('No token found in hash');
-        }
+    // Get the hash fragment
+    const hash = window.location.hash.substring(1);
+    if (!hash) {
+        console.log('No hash found');
+        checkSavedToken();
+        return;
     }
+    
+    // Parse the hash string into an object
+    const result = hash.split('&').reduce(function(result, item) {
+        const parts = item.split('=');
+        result[parts[0]] = decodeURIComponent(parts[1]);
+        return result;
+    }, {});
+    
+    console.log('Auth result:', result);
+    
+    // Check if there was an error
+    if (result.error) {
+        console.error('Auth error:', result.error);
+        localStorage.removeItem('spotify_token');
+        checkSavedToken();
+        return;
+    }
+    
+    // Verify state matches
+    const storedState = localStorage.getItem('spotify_auth_state');
+    if (result.state !== storedState) {
+        console.error('State mismatch!');
+        checkSavedToken();
+        return;
+    }
+    
+    // If we have an access token, store it
+    if (result.access_token) {
+        console.log('Got access token');
+        localStorage.setItem('spotify_token', result.access_token);
+        localStorage.removeItem('spotify_auth_state'); // Clean up state
+        window.location.hash = '';
+        updateNowPlaying(result.access_token);
+    } else {
+        checkSavedToken();
+    }
+};
 
-    // If we have a token, start updating the now playing
+// Check if we have a saved token
+function checkSavedToken() {
     const token = localStorage.getItem('spotify_token');
-    console.log('Stored token:', token ? 'Found' : 'Not found');
+    console.log('Checking saved token:', token ? 'Found' : 'Not found');
+    
     if (token) {
         updateNowPlaying(token);
         // Update every 30 seconds
@@ -62,19 +83,44 @@ window.onload = () => {
         trackNameElement.style.cursor = 'pointer';
         trackNameElement.onclick = loginToSpotify;
     }
-};
+}
 
 // Login to Spotify
 function loginToSpotify() {
-    const authUrl = SPOTIFY_AUTH_URL + 
-        '?client_id=' + encodeURIComponent(clientId) +
-        '&response_type=token' +
-        '&redirect_uri=' + encodeURIComponent(redirectUri) +
-        '&scope=' + encodeURIComponent(scopes.join(' ')) +
-        '&show_dialog=true';
+    // Generate a random state value for security
+    const state = generateRandomString(16);
+    
+    // Build authorization URL
+    const params = {
+        client_id: clientId,
+        redirect_uri: redirectUri,
+        response_type: 'token',
+        state: state,
+        scope: scopes.join(' ')
+    };
+
+    // Convert params to URL string
+    const searchParams = Object.keys(params)
+        .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+        .join('&');
+
+    const authUrl = SPOTIFY_AUTH_URL + '?' + searchParams;
+    
+    // Store state in localStorage to verify when we return
+    localStorage.setItem('spotify_auth_state', state);
     
     console.log('Redirecting to:', authUrl);
-    window.location.href = authUrl;
+    window.location = authUrl;
+}
+
+// Helper function to generate random string for state
+function generateRandomString(length) {
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let text = '';
+    for (let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
 }
 
 // Update the Now Playing section
