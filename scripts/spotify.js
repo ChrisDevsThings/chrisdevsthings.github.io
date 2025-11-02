@@ -21,35 +21,37 @@ const trackArtElement = document.getElementById('trackArt');
 // Check if we're returning from Spotify auth
 window.onload = () => {
     console.log('Checking Spotify auth...');
-
-    const hash = window.location.hash;
-    if (!hash) {
-        checkSavedToken();
-        return;
+    
+    function getHashParams() {
+        const hashParams = {};
+        const r = /([^&;=]+)=?([^&;]*)/g;
+        const q = window.location.hash.substring(1);
+        let e;
+        while (e = r.exec(q)) {
+            hashParams[e[1]] = decodeURIComponent(e[2]);
+        }
+        return hashParams;
     }
 
-    // Get access token from hash
-    const hashParams = new URLSearchParams(hash.substring(1));
-    const access_token = hashParams.get('access_token');
-    const state = hashParams.get('state');
+    const params = getHashParams();
+    const access_token = params.access_token;
+    const state = params.state;
+    
     const storedState = localStorage.getItem('spotify_auth_state');
-
-    // Clear the state
     localStorage.removeItem('spotify_auth_state');
 
     if (access_token && (state == null || state !== storedState)) {
         console.error('State mismatch!');
         checkSavedToken();
-    } else {
+    } else if (access_token) {
         // We have a valid token
-        if (access_token) {
-            console.log('Got access token');
-            localStorage.setItem('spotify_token', access_token);
-            window.location.hash = '';
-            updateNowPlaying(access_token);
-        } else {
-            checkSavedToken();
-        }
+        console.log('Got access token');
+        localStorage.setItem('spotify_token', access_token);
+        window.location.hash = '';
+        updateNowPlaying(access_token);
+    } else {
+        // No token, check saved
+        checkSavedToken();
     }
 };
 
@@ -76,15 +78,20 @@ function loginToSpotify() {
     const state = generateRandomString(16);
     localStorage.setItem('spotify_auth_state', state);
 
-    const authUrl = SPOTIFY_AUTH_URL +
-        '?response_type=token' +
-        '&client_id=' + encodeURIComponent(clientId) +
-        '&scope=' + encodeURIComponent(scopes.join(' ')) +
-        '&redirect_uri=' + encodeURIComponent(redirectUri) +
-        '&state=' + encodeURIComponent(state);
+    // Build the authorization URL exactly as per Spotify docs
+    const params = new URLSearchParams({
+        client_id: clientId,
+        response_type: 'token',
+        redirect_uri: redirectUri,
+        state: state,
+        scope: scopes.join(' '),
+        show_dialog: 'false'
+    });
+
+    const authUrl = `${SPOTIFY_AUTH_URL}?${params.toString()}`;
     
     console.log('Redirecting to:', authUrl);
-    window.location = authUrl;
+    window.location.href = authUrl;
 }
 
 // Helper function to generate random string for state
