@@ -81,7 +81,8 @@ function loginToSpotify() {
         redirect_uri: redirectUri,
         state: state,
         scope: scopes.join(' '),
-        show_dialog: true
+        show_dialog: true,
+        grant_type: 'implicit'
     });
 
     const authUrl = `${SPOTIFY_AUTH_URL}?${params.toString()}`;
