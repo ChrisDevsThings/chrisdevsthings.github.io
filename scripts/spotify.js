@@ -1,6 +1,6 @@
 // Spotify API Configuration
 const clientId = 'c7a07267bb44402d9a8a17c83655dbdf'; // Your Spotify Client ID
-const redirectUri = 'https://chrisdevsthings.github.io'; // Your GitHub Pages URL (with trailing slash)
+const redirectUri = 'https://chrisdevsthings.github.io'; // Your GitHub Pages URL
 
 // Spotify API endpoints
 const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize';
@@ -66,24 +66,15 @@ window.onload = () => {
 
 // Login to Spotify
 function loginToSpotify() {
-    // Generate random state string for security
-    const state = Math.random().toString(36).substring(2, 15);
-    localStorage.setItem('spotify_auth_state', state);
+    const authUrl = SPOTIFY_AUTH_URL + 
+        '?client_id=' + encodeURIComponent(clientId) +
+        '&response_type=token' +
+        '&redirect_uri=' + encodeURIComponent(redirectUri) +
+        '&scope=' + encodeURIComponent(scopes.join(' ')) +
+        '&show_dialog=true';
     
-    // Construct the authorization URL
-    const authUrl = new URL(SPOTIFY_AUTH_URL);
-    
-    // Add the query parameters
-    authUrl.searchParams.append('client_id', clientId);
-    authUrl.searchParams.append('response_type', 'token');
-    authUrl.searchParams.append('redirect_uri', redirectUri);
-    authUrl.searchParams.append('state', state);
-    authUrl.searchParams.append('scope', scopes.join(' '));
-    authUrl.searchParams.append('show_dialog', 'true');
-    
-    // Redirect to Spotify
-    console.log('Redirecting to:', authUrl.toString());
-    window.location.href = authUrl.toString();
+    console.log('Redirecting to:', authUrl);
+    window.location.href = authUrl;
 }
 
 // Update the Now Playing section
