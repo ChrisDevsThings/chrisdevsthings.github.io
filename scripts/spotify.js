@@ -1,6 +1,6 @@
 // Spotify API Configuration
 const clientId = 'c7a07267bb44402d9a8a17c83655dbdf'; // Your Spotify Client ID
-const redirectUri = 'https://chrisdevsthings.github.io'; // Your GitHub Pages URL
+const redirectUri = 'https://chrisdevsthings.github.io'; // Your GitHub Pages URL (with trailing slash)
 
 // Spotify API endpoints
 const SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize';
@@ -21,20 +21,30 @@ const trackArtElement = document.getElementById('trackArt');
 // Check if we're returning from Spotify auth
 window.onload = () => {
     console.log('Checking Spotify auth...');
-    const hash = window.location.hash;
-    if (hash) {
-        console.log('Found hash:', hash);
-        const token = hash
-            .substring(1)
-            .split('&')
-            .find(elem => elem.startsWith('access_token'))
-            ?.split('=')[1];
+    const params = new URLSearchParams(window.location.search);
+    const authCode = params.get('code');
+    
+    if (authCode) {
+        console.log('Got authorization code:', authCode);
+        // Exchange the code for a token
+        exchangeCodeForToken(authCode);
+    } else {
+        console.log('No auth code found, checking hash fallback...');
+        const hash = window.location.hash;
+        if (hash) {
+            console.log('Found hash:', hash);
+            const token = hash
+                .substring(1)
+                .split('&')
+                .find(elem => elem.startsWith('access_token'))
+                ?.split('=')[1];
 
-        if (token) {
-            console.log('Got token, saving...');
-            localStorage.setItem('spotify_token', token);
-            window.location.hash = ''; // Clear the hash
-            updateNowPlaying(token);
+            if (token) {
+                console.log('Got token from hash, saving...');
+                localStorage.setItem('spotify_token', token);
+                window.location.hash = ''; // Clear the hash
+                updateNowPlaying(token);
+            }
         }
     }
 
@@ -60,7 +70,16 @@ function loginToSpotify() {
     const state = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('spotify_auth_state', state);
     
-    const authUrl = `${SPOTIFY_AUTH_URL}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&response_type=token&show_dialog=true&state=${state}`;
+    const params = new URLSearchParams({
+        client_id: clientId,
+        response_type: 'token',  // Changed to token for implicit flow
+        redirect_uri: redirectUri,
+        state: state,
+        scope: scopes.join(' '),
+        show_dialog: true
+    });
+    
+    const authUrl = `${SPOTIFY_AUTH_URL}?${params.toString()}`;
     window.location.href = authUrl;
 }
 
@@ -130,5 +149,3 @@ function updateTrackInfo(track, isRecent) {
     trackNameElement.style.cursor = 'default';
     trackNameElement.onclick = null;
 }
-
-
