@@ -54,7 +54,15 @@
           </aside>
 
           <div class="contact-form-wrap reveal">
-            <form id="contactForm" class="card contact-form" novalidate>
+            <!--
+              This form uses Formsubmit (https://formsubmit.co) for a free email forwarding
+              service. The JavaScript in `scripts/main.js` uses the AJAX endpoint
+              `https://formsubmit.co/ajax/YOUR_EMAIL` to send without navigating away.
+              Replace the email address below if you want messages to go somewhere else.
+            -->
+            <form id="contactForm" class="card contact-form" method="POST" action="https://formsubmit.co/Christopher.S.Sutherland@proton.me" novalidate>
+              <!-- Disable Formsubmit's captcha; optional: add a _next field to redirect on non-AJAX fallback -->
+              <input type="hidden" name="_captcha" value="false">
               <div class="form-grid">
                 <div class="form-field">
                   <label for="name">Your name</label>

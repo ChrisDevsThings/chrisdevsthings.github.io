@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const el = document.getElementById(id);
 				if (el) el.addEventListener('input', () => el.classList.remove('error'));
 			});
-			contactForm.addEventListener('submit', (ev) => {
+			contactForm.addEventListener('submit', async (ev) => {
 				ev.preventDefault();
 				const form = ev.target;
 				const data = {
@@ -189,16 +189,39 @@ document.addEventListener('DOMContentLoaded', () => {
 					if (status) status.textContent = 'Please fix the highlighted fields.';
 					return;
 				}
-				// fake send
+				// Real send via Formsubmit (https://formsubmit.co) AJAX endpoint.
+				// The form has an `action` attribute like:
+				//   https://formsubmit.co/your-email@example.com
+				// The AJAX endpoint is the same but with `/ajax/` after the host:
+				//   https://formsubmit.co/ajax/your-email@example.com
 				if (status) status.textContent = 'Sending...';
-				setTimeout(() => {
+				const submitBtn = form.querySelector('button[type="submit"]');
+				if (submitBtn) submitBtn.disabled = true;
+				try {
+					// build AJAX URL from form.action
+					let ajaxUrl = form.action || '';
+					if (ajaxUrl && ajaxUrl.includes('formsubmit.co') && !ajaxUrl.includes('/ajax/')) {
+						ajaxUrl = ajaxUrl.replace('https://formsubmit.co/', 'https://formsubmit.co/ajax/');
+					}
+
+					const formData = new FormData(form);
+					const res = await fetch(ajaxUrl, {
+						method: 'POST',
+						body: formData,
+						headers: { 'Accept': 'application/json' }
+					});
+					if (!res.ok) throw new Error('Network response was not ok');
+					const json = await res.json();
+					// success
 					if (status) status.textContent = '';
 					form.reset();
-					// show modal
-					if (modal) {
-						modal.setAttribute('aria-hidden','false');
-					}
-				}, 700);
+					if (modal) modal.setAttribute('aria-hidden', 'false');
+				} catch (err) {
+					console.error('Form submit error:', err);
+					if (status) status.textContent = 'Error sending message — please try again later.';
+				} finally {
+					if (submitBtn) submitBtn.disabled = false;
+				}
 			});
 
 			if (closeModal) closeModal.addEventListener('click', () => {
